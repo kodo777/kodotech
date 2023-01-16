@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "btatech",
+  "version": "${version}",
+
+  "name": "BtA Tech",
+  "description": "A tech mod for Better Than Adventure!",
+  "authors": [
+    "kodo777"
+  ],
+  "contact": {
+    "homepage": "",
+    "sources": ""
+  },
+
+  "license": "MIT License",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "kodo777.btatech.BtATech"
+    ]
+  },
+  "mixins": [
+    "btatech.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.13.3"
+  },
+  "suggests": {
+  }
+}
