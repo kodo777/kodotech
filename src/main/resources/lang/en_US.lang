@@ -1446,3 +1446,5 @@ item.label.desc=Allows you to name items and creatures. Can be dyed.
 
 tile.btatech.steam.boiler.name=Steam Boiler
 tile.btatech.steam.boiler.desc=Boils water into steam.
+tile.btatech.stone.gear.name=Stone Gear
+tile.btatech.stone.gear.desc=Basic machine component.

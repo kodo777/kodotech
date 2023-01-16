@@ -2,6 +2,7 @@ package kodo777.btatech;
 
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.src.Block;
+import net.minecraft.src.Item;
 import net.minecraft.src.Material;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,11 +18,15 @@ public class BtATech implements ModInitializer {
         return BtATech.MOD_ID + "." + name;
     }
 
+    public static final Item stoneGear = new Item(140).setIconCoord(0, 14).setItemName(name("stone.gear"));
+
     public static final Block steamBoiler = BlockHelper.createBlock(new Block(1000, Material.rock), name("steam.boiler"), 31, 2, 17, 6, 31, 0, 31, 1, 31, 1, 31, 1, Block.soundStoneFootstep, 0.5f, 0.5f, 0f);
 
     @Override
     public void onInitialize() {
         LOGGER.info("BtATech initialized.");
+
+        TextureHelper.addTextureToItems(MOD_ID, "stone_gear.png",0, 14);
 
         TextureHelper.addTextureToTerrain(MOD_ID, "steam_boiler.png", 31, 0);
         TextureHelper.addTextureToTerrain(MOD_ID, "steam_boiler_side.png", 31, 1);
