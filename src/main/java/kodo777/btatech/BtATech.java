@@ -1,5 +1,6 @@
 package kodo777.btatech;
 
+import kodo777.btatech.block.BlockSteamBoiler;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.src.Block;
 import net.minecraft.src.Item;
@@ -7,6 +8,7 @@ import net.minecraft.src.Material;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import turniplabs.halplibe.helper.BlockHelper;
+import turniplabs.halplibe.helper.RecipeHelper;
 import turniplabs.halplibe.helper.TextureHelper;
 
 
@@ -18,15 +20,26 @@ public class BtATech implements ModInitializer {
         return BtATech.MOD_ID + "." + name;
     }
 
-    public static final Item stoneGear = new Item(140).setIconCoord(0, 14).setItemName(name("stone.gear"));
+    public static final Item stoneGear = new Item(140).setIconCoord(19, 0).setItemName(name("stone.gear"));
 
-    public static final Block steamBoiler = BlockHelper.createBlock(new Block(1000, Material.rock), name("steam.boiler"), 31, 2, 17, 6, 31, 0, 31, 1, 31, 1, 31, 1, Block.soundStoneFootstep, 0.5f, 0.5f, 0f);
+    public static final Block steamBoiler = BlockHelper.createBlock(
+            new BlockSteamBoiler(1001 + 14, Material.rock),
+            name("steam.boiler"),
+            31,0,
+            Block.soundStoneFootstep,
+            3f,
+            2f,
+            0f);
+
 
     @Override
     public void onInitialize() {
         LOGGER.info("BtATech initialized.");
 
-        TextureHelper.addTextureToItems(MOD_ID, "stone_gear.png",0, 14);
+        RecipeHelper.Crafting.createRecipe(steamBoiler, 1, new Object[]{"AAA", "BCB", "DED", 'A', Block.brickClay, 'B', Item.ingotGold, 'C', Block.furnaceStoneIdle, 'D', Block.blockGold, 'E', stoneGear});
+        RecipeHelper.Crafting.createRecipe(stoneGear, 1, new Object[]{"#A#", "A#A", "#A#", 'A', Block.cobbleStone});
+
+        TextureHelper.addTextureToItems(MOD_ID, "stone_gear.png",19, 0);
 
         TextureHelper.addTextureToTerrain(MOD_ID, "steam_boiler.png", 31, 0);
         TextureHelper.addTextureToTerrain(MOD_ID, "steam_boiler_side.png", 31, 1);
