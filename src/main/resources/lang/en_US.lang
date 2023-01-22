@@ -1444,8 +1444,12 @@ item.ammo.arrow.purple.desc=How did you get this?!
 item.label.name=Label
 item.label.desc=Allows you to name items and creatures. Can be dyed.
 
-tile.btatech.steam.boiler.name=Steam Boiler
-tile.btatech.steam.boiler.desc=Boils water into steam.
+tile.btatech.steam.boiler.idle.name=Steam Boiler
+tile.btatech.steam.boiler.idle.desc=Boils water into steam.
 
 item.btatech.stone.gear.name=Stone Gear
 item.btatech.stone.gear.desc=Basic machine component.
+item.btatech.carbon.enriched.steel.ingot.name=Carbon Enriched Steel Ingot
+item.btatech.carbon.enriched.steel.ingot.desc=You better not smelt it again.
+item.btatech.ash.of.shame.name=Ash Of Shame
+item.btatech.ash.of.shame.desc=I told you not to smelt it again.

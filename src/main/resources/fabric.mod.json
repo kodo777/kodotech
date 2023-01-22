@@ -29,5 +29,11 @@
     "fabricloader": ">=0.13.3"
   },
   "suggests": {
+  },
+  "custom": {
+    "loom:injected_interfaces": {
+      "net/minecraft/src/EntityPlayer": ["kodo777/btatech/interfaces/IEntityPlayer"],
+      "net/minecraft/src/EntityPlayerSP": ["kodo777/btatech/interfaces/IEntityPlayerSP"]
+    }
   }
 }
