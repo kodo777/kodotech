@@ -2,6 +2,7 @@ package kodo777.btatech.tileentity;
 
 import kodo777.btatech.BtATech;
 import kodo777.btatech.block.BlockSteamBoiler;
+import kodo777.btatech.recipe.RecipesSteamBoiler;
 import net.minecraft.src.*;
 
 public class TileEntitySteamBoiler extends TileEntity implements IInventory{
@@ -168,7 +169,7 @@ public class TileEntitySteamBoiler extends TileEntity implements IInventory{
         if (this.steamBoilerItemStacks[0] == null) {
             return false;
         } else {
-            ItemStack itemstack = RecipesFurnace.smelting().getSmeltingResult(this.steamBoilerItemStacks[0].getItem().itemID);
+            ItemStack itemstack = RecipesSteamBoiler.smelting().getSmeltingResult(this.steamBoilerItemStacks[0].getItem().itemID);
             if (itemstack == null) {
                 return false;
             } else if (this.steamBoilerItemStacks[2] == null) {
@@ -185,7 +186,7 @@ public class TileEntitySteamBoiler extends TileEntity implements IInventory{
 
     public void smeltItem() {
         if (this.canSmelt()) {
-            ItemStack itemstack = RecipesFurnace.smelting().getSmeltingResult(this.steamBoilerItemStacks[0].getItem().itemID);
+            ItemStack itemstack = RecipesSteamBoiler.smelting().getSmeltingResult(this.steamBoilerItemStacks[0].getItem().itemID);
             if (this.steamBoilerItemStacks[2] == null) {
                 this.steamBoilerItemStacks[2] = itemstack.copy();
             } else if (this.steamBoilerItemStacks[2].itemID == itemstack.itemID) {
