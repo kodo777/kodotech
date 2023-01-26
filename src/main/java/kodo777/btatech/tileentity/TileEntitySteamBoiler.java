@@ -206,7 +206,7 @@ public class TileEntitySteamBoiler extends TileEntity implements IInventory{
     }
 
     private int getBurnTimeFromItem(ItemStack itemStack) {
-        return itemStack == null ? 0 : LookupFuelFurnace.fuelFurnace().getFuelYield(itemStack.getItem().itemID);
+        return itemStack == null ? 0 : LookupFuelFurnaceBlast.fuelFurnaceBlast().getFuelYield(itemStack.getItem().itemID);
     }
 
     public boolean canInteractWith(EntityPlayer entityplayer) {

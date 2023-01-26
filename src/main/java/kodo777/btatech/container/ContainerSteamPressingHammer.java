@@ -1,5 +1,6 @@
 package kodo777.btatech.container;
 
+import kodo777.btatech.BtATech;
 import kodo777.btatech.tileentity.TileEntitySteamPressingHammer;
 import net.minecraft.src.*;
 
@@ -91,7 +92,7 @@ public class ContainerSteamPressingHammer extends Container {
         if (slot != null && slot.hasStack()) {
             ItemStack item = slot.getStack();
             ItemStack originalItem = item.copy();
-            if (slotID < 3 || (originalItem.itemID >= Block.blocksList.length || Block.blocksList[originalItem.itemID].blockMaterial != Material.wood) && originalItem.itemID != Item.stick.itemID && originalItem.itemID != Item.coal.itemID && originalItem.itemID != Item.nethercoal.itemID && originalItem.itemID != Item.olivine.itemID && originalItem.itemID != Item.bucketLava.itemID && originalItem.itemID != Block.saplingOak.blockID && originalItem.itemID != Block.blockCoal.blockID && originalItem.itemID != Block.blockCharcoal.blockID && originalItem.itemID != Block.blockNetherCoal.blockID && originalItem.itemID != Block.blockOlivine.blockID) {
+            if (slotID < 3 || (originalItem.itemID >= Block.blocksList.length || Block.blocksList[originalItem.itemID].blockMaterial != Material.wood) && originalItem.itemID != Item.stick.itemID && originalItem.itemID != Item.coal.itemID && originalItem.itemID != Item.nethercoal.itemID && originalItem.itemID != Item.olivine.itemID && originalItem.itemID != Item.bucketLava.itemID && originalItem.itemID != Block.saplingOak.blockID && originalItem.itemID != Block.blockCoal.blockID && originalItem.itemID != Block.blockCharcoal.blockID && originalItem.itemID != Block.blockNetherCoal.blockID && originalItem.itemID != Block.blockOlivine.blockID && originalItem.itemID != BtATech.bucketSteam.itemID) {
                 if (slotID == 2) {
                     this.onStackMergeShiftClick(item, 3, 39, true);
                 } else if (slotID >= 3) {

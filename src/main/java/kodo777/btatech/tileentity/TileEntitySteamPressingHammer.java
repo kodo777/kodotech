@@ -2,6 +2,7 @@ package kodo777.btatech.tileentity;
 
 import kodo777.btatech.BtATech;
 import kodo777.btatech.block.BlockSteamPressingHammer;
+import kodo777.btatech.recipe.LookupFuelSteamPressingHammer;
 import kodo777.btatech.recipe.RecipesSteamPressingHammer;
 import net.minecraft.src.*;
 
@@ -130,7 +131,7 @@ public class TileEntitySteamPressingHammer extends TileEntity implements IInvent
                 if (this.currentBurnTime > 0) {
                     steamPressingHammerUpdated = true;
                     if (this.steamPressingHammerItemStacks[1] != null) {
-                        if (this.steamPressingHammerItemStacks[1].getItem() == Item.bucketLava) {
+                        if (this.steamPressingHammerItemStacks[1].getItem() == BtATech.bucketSteam) {
                             this.steamPressingHammerItemStacks[1] = new ItemStack(Item.bucket);
                         } else {
                             --this.steamPressingHammerItemStacks[1].stackSize;
@@ -213,7 +214,7 @@ public class TileEntitySteamPressingHammer extends TileEntity implements IInvent
     }
 
     private int getBurnTimeFromItem(ItemStack itemStack) {
-        return itemStack == null ? 0 : LookupFuelFurnace.fuelFurnace().getFuelYield(itemStack.getItem().itemID);
+        return itemStack == null ? 0 : LookupFuelSteamPressingHammer.fuelSteamPressingHammer().getFuelYield(itemStack.getItem().itemID);
     }
 
     public boolean canInteractWith(EntityPlayer entityplayer) {

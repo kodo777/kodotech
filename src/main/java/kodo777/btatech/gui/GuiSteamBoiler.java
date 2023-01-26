@@ -21,8 +21,9 @@ public class GuiSteamBoiler extends GuiContainer {
     }
 
     protected void drawGuiContainerForegroundLayer() {
-        this.fontRenderer.drawString("Steam Boiler", 60, 6, 4210752);
-        this.fontRenderer.drawString("Inventory", 8, this.ySize - 96 + 2, 4210752);
+        int argb = 0xFFFFFFFF;
+        this.fontRenderer.drawString("Steam Boiler", 6, 5, argb);
+        this.fontRenderer.drawString("Inventory", 8, this.ySize - 92, argb);
     }
 
     public void drawGuiContainerBackgroundLayer(float f) {
