@@ -1,7 +1,7 @@
 {
     "required": true,
     "minVersion": "0.8",
-    "package": "kodo777.btatech.mixin",
+    "package": "kodo777.kodotech.mixin",
     "compatibilityLevel": "JAVA_8",
     "mixins": [
     ],

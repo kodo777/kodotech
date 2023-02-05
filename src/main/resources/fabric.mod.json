@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "id": "btatech",
+  "id": "kodotech",
   "version": "${version}",
 
-  "name": "BtA Tech",
+  "name": "Kodo's Machinery",
   "description": "A tech mod for Better Than Adventure!",
   "authors": [
     "kodo777"
@@ -18,11 +18,11 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "kodo777.btatech.BtATech"
+      "kodo777.kodotech.KodoTech"
     ]
   },
   "mixins": [
-    "btatech.mixins.json"
+    "kodotech.mixins.json"
   ],
 
   "depends": {
@@ -32,8 +32,8 @@
   },
   "custom": {
     "loom:injected_interfaces": {
-      "net/minecraft/src/EntityPlayer": ["kodo777/btatech/interfaces/IEntityPlayer"],
-      "net/minecraft/src/EntityPlayerSP": ["kodo777/btatech/interfaces/IEntityPlayerSP"]
+      "net/minecraft/src/EntityPlayer": ["kodo777/kodotech/interfaces/IEntityPlayer"],
+      "net/minecraft/src/EntityPlayerSP": ["kodo777/kodotech/interfaces/IEntityPlayerSP"]
     }
   }
 }
