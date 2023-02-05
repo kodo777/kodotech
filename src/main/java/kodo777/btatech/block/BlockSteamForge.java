@@ -1,22 +1,22 @@
 package kodo777.btatech.block;
 
 import kodo777.btatech.BtATech;
-import kodo777.btatech.gui.GuiSteamBoiler;
-import kodo777.btatech.tileentity.TileEntitySteamBoiler;
+import kodo777.btatech.gui.GuiSteamForge;
+import kodo777.btatech.tileentity.TileEntitySteamForge;
 import net.minecraft.src.*;
 
 import java.util.Random;
 
-public class BlockSteamBoiler extends BlockContainerRotatable {
-    protected Random steamBoilerRand = new Random();
+public class BlockSteamForge extends BlockContainerRotatable {
+    protected Random steamForgeRand = new Random();
     protected final boolean isActive;
-    protected static boolean keepSteamBoilerInventory = false;
+    protected static boolean keepSteamForgeInventory = false;
 
-    public BlockSteamBoiler(int i, Boolean flag){ super(i, Material.rock); this.isActive=flag;}
+    public BlockSteamForge(int i, Boolean flag){ super(i, Material.rock); this.isActive=flag;}
     public int idDropped(int i, Random random) {
-        return BtATech.steamBoilerIdle.blockID;
+        return BtATech.steamForgeIdle.blockID;
     }
-    protected TileEntity getBlockEntity() {return new TileEntitySteamBoiler();}
+    protected TileEntity getBlockEntity() {return new TileEntitySteamForge();}
     public void randomDisplayTick(World world, int i, int j, int k, Random random) {
         if (this.isActive) {
             int l = world.getBlockMetadata(i, j, k);
@@ -42,44 +42,45 @@ public class BlockSteamBoiler extends BlockContainerRotatable {
         }
     }
     public boolean blockActivated(World world, int i, int j, int k, EntityPlayer entityplayer) {
-        TileEntitySteamBoiler tileentitysteamboiler = (TileEntitySteamBoiler)world.getBlockTileEntity(i, j, k);
-        if (tileentitysteamboiler != null){
-            entityplayer.displayGui(new GuiSteamBoiler(entityplayer.inventory, tileentitysteamboiler));
+        TileEntitySteamForge tileentitysteamforge = (TileEntitySteamForge) world.getBlockTileEntity(i, j, k);
+        if (tileentitysteamforge != null){
+            entityplayer.displayGui(new GuiSteamForge(entityplayer.inventory, tileentitysteamforge));
         }
         return true;
     }
-    public static void updateSteamBoilerBlockState(boolean lit, World world, int x, int y, int z) {
+
+    public static void updateSteamForgeBlockState(boolean lit, World world, int x, int y, int z) {
         int l = world.getBlockMetadata(x, y, z);
         TileEntity tileentity = world.getBlockTileEntity(x, y, z);
         if (tileentity == null) {
             world.setBlockWithNotify(x, y, z, 0);
         } else {
-            keepSteamBoilerInventory = true;
+            keepSteamForgeInventory = true;
             if (lit) {
-                world.setBlockWithNotify(x, y, z, BtATech.steamBoilerActive.blockID);
+                world.setBlockWithNotify(x, y, z, BtATech.steamForgeActive.blockID);
             } else {
-                world.setBlockWithNotify(x, y, z, BtATech.steamBoilerIdle.blockID);
+                world.setBlockWithNotify(x, y, z, BtATech.steamForgeIdle.blockID);
             }
 
-            keepSteamBoilerInventory = false;
+            keepSteamForgeInventory = false;
             world.setBlockMetadataWithNotify(x, y, z, l);
             tileentity.validate();
             world.setBlockTileEntity(x, y, z, tileentity);
         }
     }
     public void onBlockRemoval(World world, int i, int j, int k) {
-        if (!keepSteamBoilerInventory) {
-            TileEntitySteamBoiler tileentitysteamboiler = (TileEntitySteamBoiler)world.getBlockTileEntity(i, j, k);
+        if (!keepSteamForgeInventory) {
+            TileEntitySteamForge tileentitysteamforge = (TileEntitySteamForge) world.getBlockTileEntity(i, j, k);
 
-            for(int l = 0; l < tileentitysteamboiler.getSizeInventory(); ++l) {
-                ItemStack itemstack = tileentitysteamboiler.getStackInSlot(l);
+            for(int l = 0; l < tileentitysteamforge.getSizeInventory(); ++l) {
+                ItemStack itemstack = tileentitysteamforge.getStackInSlot(l);
                 if (itemstack != null) {
-                    float f = this.steamBoilerRand.nextFloat() * 0.8F + 0.1F;
-                    float f1 = this.steamBoilerRand.nextFloat() * 0.8F + 0.1F;
-                    float f2 = this.steamBoilerRand.nextFloat() * 0.8F + 0.1F;
+                    float f = this.steamForgeRand.nextFloat() * 0.8F + 0.1F;
+                    float f1 = this.steamForgeRand.nextFloat() * 0.8F + 0.1F;
+                    float f2 = this.steamForgeRand.nextFloat() * 0.8F + 0.1F;
 
                     while(itemstack.stackSize > 0) {
-                        int i1 = this.steamBoilerRand.nextInt(21) + 10;
+                        int i1 = this.steamForgeRand.nextInt(21) + 10;
                         if (i1 > itemstack.stackSize) {
                             i1 = itemstack.stackSize;
                         }
@@ -87,9 +88,9 @@ public class BlockSteamBoiler extends BlockContainerRotatable {
                         itemstack.stackSize -= i1;
                         EntityItem entityitem = new EntityItem(world, (double)((float)i + f), (double)((float)j + f1), (double)((float)k + f2), new ItemStack(itemstack.itemID, i1, itemstack.getMetadata()));
                         float f3 = 0.05F;
-                        entityitem.motionX = (double)((float)this.steamBoilerRand.nextGaussian() * f3);
-                        entityitem.motionY = (double)((float)this.steamBoilerRand.nextGaussian() * f3 + 0.2F);
-                        entityitem.motionZ = (double)((float)this.steamBoilerRand.nextGaussian() * f3);
+                        entityitem.motionX = (double)((float)this.steamForgeRand.nextGaussian() * f3);
+                        entityitem.motionY = (double)((float)this.steamForgeRand.nextGaussian() * f3 + 0.2F);
+                        entityitem.motionZ = (double)((float)this.steamForgeRand.nextGaussian() * f3);
                         world.entityJoinedWorld(entityitem);
                     }
                 }

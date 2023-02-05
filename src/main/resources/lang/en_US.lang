@@ -1450,6 +1450,8 @@ tile.btatech.steam.pressing.hammer.idle.name=Steam Pressing Hammer
 tile.btatech.steam.pressing.hammer.idle.desc=Presses ingots into plates at high temperatures.
 tile.btatech.steam.machine.hull.name=Steam Machine Hull
 tile.btatech.steam.machine.hull.desc=A major component of steam machines.
+tile.btatech.steam.forge.idle.name=Steam Forge
+tile.btatech.steam.forge.idle.desc=Forges plates into various shapes
 
 item.btatech.stone.gear.name=Stone Gear
 item.btatech.stone.gear.desc=Basic machine component.

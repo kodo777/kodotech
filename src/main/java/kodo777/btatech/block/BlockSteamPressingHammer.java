@@ -1,7 +1,11 @@
 package kodo777.btatech.block;
 
 import kodo777.btatech.BtATech;
+import kodo777.btatech.gui.GuiSteamBoiler;
+import kodo777.btatech.gui.GuiSteamPressingHammer;
 import kodo777.btatech.interfaces.IEntityPlayer;
+import kodo777.btatech.interfaces.IEntityPlayerSP;
+import kodo777.btatech.tileentity.TileEntitySteamBoiler;
 import kodo777.btatech.tileentity.TileEntitySteamPressingHammer;
 import net.minecraft.src.*;
 
@@ -42,13 +46,13 @@ public class BlockSteamPressingHammer extends BlockContainerRotatable {
         }
     }
     public boolean blockActivated(World world, int i, int j, int k, EntityPlayer entityplayer) {
-        if (!world.isMultiplayerAndNotHost) {
-            TileEntitySteamPressingHammer tileentitysteampressinghammer = (TileEntitySteamPressingHammer) world.getBlockTileEntity(i, j, k);
-            ((IEntityPlayer) entityplayer).displayGuiSteamPressingHammer(tileentitysteampressinghammer);
+        TileEntitySteamPressingHammer tileentitysteampressinghammer = (TileEntitySteamPressingHammer) world.getBlockTileEntity(i, j, k);
+        if (tileentitysteampressinghammer != null){
+            entityplayer.displayGui(new GuiSteamPressingHammer(entityplayer.inventory, tileentitysteampressinghammer));
         }
-
         return true;
     }
+
     public static void updateSteamPressingHammerBlockState(boolean lit, World world, int x, int y, int z) {
         int l = world.getBlockMetadata(x, y, z);
         TileEntity tileentity = world.getBlockTileEntity(x, y, z);

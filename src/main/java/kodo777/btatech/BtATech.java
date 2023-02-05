@@ -1,9 +1,11 @@
 package kodo777.btatech;
 
 import kodo777.btatech.block.BlockSteamBoiler;
+import kodo777.btatech.block.BlockSteamForge;
 import kodo777.btatech.block.BlockSteamPressingHammer;
 import kodo777.btatech.item.ItemBucketSteam;
 import kodo777.btatech.tileentity.TileEntitySteamBoiler;
+import kodo777.btatech.tileentity.TileEntitySteamForge;
 import kodo777.btatech.tileentity.TileEntitySteamPressingHammer;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.src.*;
@@ -35,6 +37,9 @@ public class BtATech implements ModInitializer {
     public static final Item plateIron = new Item(ITEM_ID + 7).setIconCoord(19, 6).setItemName(name("plate.iron"));
     public static final Item plateSteel = new Item(ITEM_ID + 8).setIconCoord(19, 7).setItemName(name("plate.steel"));
     public static final Item plateCarbonEnrichedSteel = new Item(ITEM_ID + 9).setIconCoord(19, 8).setItemName(name("plate.carbon.enriched.steel"));
+    public static final Item gearIron = new Item(ITEM_ID + 10).setIconCoord(19, 9).setItemName(name("gear.iron"));
+    public static final Item gearSteel = new Item(ITEM_ID + 11).setIconCoord(19, 10).setItemName(name("gear.steel"));
+    public static final Item gearCarbonEnrichedSteel = new Item(ITEM_ID + 12).setIconCoord(19, 11).setItemName(name("gear.carbon.enriched.steel"));
 
     public static final Block steamBoilerIdle = BlockHelper.createBlock(MOD_ID,
             new BlockSteamBoiler(BLOCK_ID + 1, false),
@@ -92,6 +97,30 @@ public class BtATech implements ModInitializer {
             2f,
             0f);
 
+    public static final Block steamForgeIdle = BlockHelper.createBlock(MOD_ID,
+            new BlockSteamForge(BLOCK_ID + 6, false),
+            "steam.forge.idle",
+            "steam_boiler_top.png", "steam_boiler_bottom.png", "steam_forge.png", "steam_boiler_side.png", "steam_boiler_side.png", "steam_boiler_side.png",
+            Block.soundStoneFootstep,
+            3f,
+            2f,
+            0f);
+    static {
+        ((BlockAccessor) steamForgeIdle).callSetImmovable();
+    }
+
+    public static final Block steamForgeActive = BlockHelper.createBlock(MOD_ID,
+            new BlockSteamForge(BLOCK_ID + 7, true),
+            "steam.forge.active",
+            "steam_boiler_top.png", "steam_boiler_bottom.png", "steam_forge_active.png", "steam_boiler_side.png", "steam_boiler_side.png", "steam_boiler_side.png",
+            Block.soundStoneFootstep,
+            3f,
+            2f,
+            1f).setNotInCreativeMenu();
+    static {
+        ((BlockAccessor) steamForgeActive).callSetImmovable();
+    }
+
     @Override
     public void onInitialize() {
         LOGGER.info("BtATech initialized.");
@@ -99,6 +128,7 @@ public class BtATech implements ModInitializer {
         RecipeHelper.Crafting.createRecipe(steamBoilerIdle, 1, new Object[]{"AAA", "BCB", "DED", 'A', Item.nethercoal, 'B', stoneGear, 'C', Block.furnaceStoneIdle, 'D', Item.dustRedstone, 'E', steamMachineHull});
         RecipeHelper.Crafting.createRecipe(steamMachineHull, 1, new Object[]{"AAA", "B#B", "CDC", 'A', Block.brickClay, 'B', stoneGear, 'C', Item.dustRedstone, 'D', Block.blockGold});
         RecipeHelper.Crafting.createRecipe(steamPressingHammerIdle, 1, new Object[]{"AAA", "BCB", "DED", 'A', Block.blockIron, 'B', stoneGear, 'C', Item.ingotSteel, 'D', Item.dustRedstone, 'E', steamMachineHull});
+        RecipeHelper.Crafting.createRecipe(steamForgeIdle, 1, new Object[]{"AAA", "BCB", "DED", 'A', plateSteel, 'B', stoneGear, 'C', Block.blockSteel, 'D', Item.dustRedstone, 'E', steamMachineHull});
         RecipeHelper.Crafting.createRecipe(stoneGear, 1, new Object[]{"#A#", "A#A", "#A#", 'A', Block.cobbleStone});
         RecipeHelper.Crafting.createRecipe(bottle, 4, new Object[]{"###", "A#A", "#A#", 'A', Block.glass});
         RecipeHelper.Crafting.createRecipe(bottleSteam, 4, new Object[]{"ABB", "BB#", "###", 'A', bucketSteam, 'B', bottle});
@@ -115,9 +145,13 @@ public class BtATech implements ModInitializer {
         TextureHelper.addTextureToItems(MOD_ID, "iron_plate.png", 19, 6);
         TextureHelper.addTextureToItems(MOD_ID, "steel_plate.png", 19, 7);
         TextureHelper.addTextureToItems(MOD_ID, "carbon_enriched_steel_plate.png", 19, 8);
+        TextureHelper.addTextureToItems(MOD_ID, "iron_gear.png", 19, 9);
+        TextureHelper.addTextureToItems(MOD_ID, "steel_gear.png", 19, 10);
+        TextureHelper.addTextureToItems(MOD_ID, "carbon_enriched_steel_gear.png", 19, 11);
 
         EntityHelper.createTileEntity(TileEntitySteamBoiler.class, "tileEntitySteamBoiler");
         EntityHelper.createTileEntity(TileEntitySteamPressingHammer.class, "tileEntitySteamPressingHammer");
+        EntityHelper.createTileEntity(TileEntitySteamForge.class, "tileEntitySteamForge");
 
         //TextureHelper.addTextureToTerrain(MOD_ID, "steam_boiler.png", 31, 0);
         //TextureHelper.addTextureToTerrain(MOD_ID, "steam_boiler_active.png", 31, 1);

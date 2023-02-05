@@ -10,10 +10,10 @@ import org.lwjgl.opengl.GL11;
 import java.awt.image.BufferedImage;
 
 public class GuiSteamBoiler extends GuiContainer {
-    private TileEntitySteamBoiler steamBoilerInventory;
+    private final TileEntitySteamBoiler steamBoilerInventory;
 
-    private BufferedImage guiIMG = Textures.readImage(getClass().getResourceAsStream("/assets/btatech/gui/gui_steam_boiler.png"));
-    private int guiTexture = Minecraft.getMinecraft().renderEngine.allocateAndSetupTexture(guiIMG);
+    private final BufferedImage guiIMG = Textures.readImage(getClass().getResourceAsStream("/assets/btatech/gui/gui_steam_boiler.png"));
+    private final int guiTexture = Minecraft.getMinecraft().renderEngine.allocateAndSetupTexture(guiIMG);
 
     public GuiSteamBoiler(InventoryPlayer inventoryplayer, TileEntitySteamBoiler tileentitysteamboiler) {
         super(new ContainerSteamBoiler(inventoryplayer, tileentitysteamboiler));
