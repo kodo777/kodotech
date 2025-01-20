@@ -21,7 +21,7 @@ import turniplabs.halplibe.util.RecipeEntrypoint;
 
 public class BtATech implements ModInitializer, RecipeEntrypoint {
     public static final String MOD_ID = "kodotech";
-    public static final int BLOCK_ID = 2000;
+    public static final int BLOCK_ID = 1970;
     public static int blockId = BLOCK_ID;
     public static final int ITEM_ID = 19900;
     public static int itemId = ITEM_ID;
