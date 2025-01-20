@@ -1,22 +1,35 @@
 package kodo777.btatech.block;
 
 import kodo777.btatech.BtATech;
+import kodo777.btatech.KodoGui;
 import kodo777.btatech.gui.GuiSteamBoiler;
 import kodo777.btatech.tileentity.TileEntitySteamBoiler;
-import net.minecraft.src.*;
+import net.minecraft.core.block.BlockTileEntityRotatable;
+import net.minecraft.core.block.entity.TileEntity;
+import net.minecraft.core.entity.EntityItem;
+import net.minecraft.core.entity.player.EntityPlayer;
+import net.minecraft.core.block.material.Material;
+import net.minecraft.core.enums.EnumDropCause;
+import net.minecraft.core.item.ItemStack;
+import net.minecraft.core.util.helper.Side;
+import net.minecraft.core.world.World;
 
 import java.util.Random;
 
-public class BlockSteamBoiler extends BlockContainerRotatable {
+public class BlockSteamBoiler extends BlockTileEntityRotatable {
     protected Random steamBoilerRand = new Random();
     protected final boolean isActive;
     protected static boolean keepSteamBoilerInventory = false;
 
-    public BlockSteamBoiler(int i, Boolean flag){ super(i, Material.rock); this.isActive=flag;}
-    public int idDropped(int i, Random random) {
-        return BtATech.steamBoilerIdle.blockID;
+    public BlockSteamBoiler(String key, int i, Boolean flag){
+        super(key, i, Material.stone);
+        this.isActive = flag;
     }
-    protected TileEntity getBlockEntity() {return new TileEntitySteamBoiler();}
+    @Override
+    public ItemStack[] getBreakResult(World world, EnumDropCause dropCause, int x, int y, int z, int meta, TileEntity tileEntity) {
+        return new ItemStack[] { new ItemStack(BtATech.steamBoilerIdle) };
+    }
+    @Override
     public void randomDisplayTick(World world, int i, int j, int k, Random random) {
         if (this.isActive) {
             int l = world.getBlockMetadata(i, j, k);
@@ -26,25 +39,26 @@ public class BlockSteamBoiler extends BlockContainerRotatable {
             float f3 = 0.52F;
             float f4 = random.nextFloat() * 0.6F - 0.3F;
             if (l == 4) {
-                world.spawnParticle("smoke", (double)(f - f3), (double)f1, (double)(f2 + f4), 0.0, 0.0, 0.0);
-                world.spawnParticle("flame", (double)(f - f3), (double)f1, (double)(f2 + f4), 0.0, 0.0, 0.0);
+                world.spawnParticle("smoke", (double)(f - f3), (double)f1, (double)(f2 + f4), 0.0, 0.0, 0.0, 0);
+                world.spawnParticle("flame", (double)(f - f3), (double)f1, (double)(f2 + f4), 0.0, 0.0, 0.0, 0);
             } else if (l == 5) {
-                world.spawnParticle("smoke", (double)(f + f3), (double)f1, (double)(f2 + f4), 0.0, 0.0, 0.0);
-                world.spawnParticle("flame", (double)(f + f3), (double)f1, (double)(f2 + f4), 0.0, 0.0, 0.0);
+                world.spawnParticle("smoke", (double)(f + f3), (double)f1, (double)(f2 + f4), 0.0, 0.0, 0.0, 0);
+                world.spawnParticle("flame", (double)(f + f3), (double)f1, (double)(f2 + f4), 0.0, 0.0, 0.0, 0);
             } else if (l == 2) {
-                world.spawnParticle("smoke", (double)(f + f4), (double)f1, (double)(f2 - f3), 0.0, 0.0, 0.0);
-                world.spawnParticle("flame", (double)(f + f4), (double)f1, (double)(f2 - f3), 0.0, 0.0, 0.0);
+                world.spawnParticle("smoke", (double)(f + f4), (double)f1, (double)(f2 - f3), 0.0, 0.0, 0.0, 0);
+                world.spawnParticle("flame", (double)(f + f4), (double)f1, (double)(f2 - f3), 0.0, 0.0, 0.0, 0);
             } else if (l == 3) {
-                world.spawnParticle("smoke", (double)(f + f4), (double)f1, (double)(f2 + f3), 0.0, 0.0, 0.0);
-                world.spawnParticle("flame", (double)(f + f4), (double)f1, (double)(f2 + f3), 0.0, 0.0, 0.0);
+                world.spawnParticle("smoke", (double)(f + f4), (double)f1, (double)(f2 + f3), 0.0, 0.0, 0.0, 0);
+                world.spawnParticle("flame", (double)(f + f4), (double)f1, (double)(f2 + f3), 0.0, 0.0, 0.0, 0);
             }
 
         }
     }
-    public boolean blockActivated(World world, int i, int j, int k, EntityPlayer entityplayer) {
-        TileEntitySteamBoiler tileentitysteamboiler = (TileEntitySteamBoiler)world.getBlockTileEntity(i, j, k);
+    @Override
+    public boolean onBlockRightClicked(World world, int x, int y, int z, EntityPlayer player, Side side, double xPlaced, double yPlaced) {
+        TileEntitySteamBoiler tileentitysteamboiler = (TileEntitySteamBoiler) world.getBlockTileEntity(x, y, z);
         if (tileentitysteamboiler != null){
-            entityplayer.displayGui(new GuiSteamBoiler(entityplayer.inventory, tileentitysteamboiler));
+            ((KodoGui) player).kodotech$displayGuiSteamBoiler(tileentitysteamboiler);
         }
         return true;
     }
@@ -56,9 +70,9 @@ public class BlockSteamBoiler extends BlockContainerRotatable {
         } else {
             keepSteamBoilerInventory = true;
             if (lit) {
-                world.setBlockWithNotify(x, y, z, BtATech.steamBoilerActive.blockID);
+                world.setBlockWithNotify(x, y, z, BtATech.steamBoilerActive.id);
             } else {
-                world.setBlockWithNotify(x, y, z, BtATech.steamBoilerIdle.blockID);
+                world.setBlockWithNotify(x, y, z, BtATech.steamBoilerIdle.id);
             }
 
             keepSteamBoilerInventory = false;
@@ -67,9 +81,11 @@ public class BlockSteamBoiler extends BlockContainerRotatable {
             world.setBlockTileEntity(x, y, z, tileentity);
         }
     }
-    public void onBlockRemoval(World world, int i, int j, int k) {
+
+    @Override
+    public void onBlockRemoved(World world, int x, int y, int z, int data) {
         if (!keepSteamBoilerInventory) {
-            TileEntitySteamBoiler tileentitysteamboiler = (TileEntitySteamBoiler)world.getBlockTileEntity(i, j, k);
+            TileEntitySteamBoiler tileentitysteamboiler = (TileEntitySteamBoiler)world.getBlockTileEntity(x, y, z);
 
             for(int l = 0; l < tileentitysteamboiler.getSizeInventory(); ++l) {
                 ItemStack itemstack = tileentitysteamboiler.getStackInSlot(l);
@@ -85,17 +101,22 @@ public class BlockSteamBoiler extends BlockContainerRotatable {
                         }
 
                         itemstack.stackSize -= i1;
-                        EntityItem entityitem = new EntityItem(world, (double)((float)i + f), (double)((float)j + f1), (double)((float)k + f2), new ItemStack(itemstack.itemID, i1, itemstack.getMetadata()));
+                        EntityItem entityitem = new EntityItem(world, (double)((float)x + f), (double)((float)y + f1), (double)((float)z + f2), new ItemStack(itemstack.itemID, i1, itemstack.getMetadata()));
                         float f3 = 0.05F;
-                        entityitem.motionX = (double)((float)this.steamBoilerRand.nextGaussian() * f3);
-                        entityitem.motionY = (double)((float)this.steamBoilerRand.nextGaussian() * f3 + 0.2F);
-                        entityitem.motionZ = (double)((float)this.steamBoilerRand.nextGaussian() * f3);
+                        entityitem.xd = (double)((float)this.steamBoilerRand.nextGaussian() * f3);
+                        entityitem.yd = (double)((float)this.steamBoilerRand.nextGaussian() * f3 + 0.2F);
+                        entityitem.zd = (double)((float)this.steamBoilerRand.nextGaussian() * f3);
                         world.entityJoinedWorld(entityitem);
                     }
                 }
             }
         }
 
-        super.onBlockRemoval(world, i, j, k);
+        super.onBlockRemoved(world, x, y, z, data);
+    }
+
+    @Override
+    protected TileEntity getNewBlockEntity() {
+        return new TileEntitySteamBoiler();
     }
 }

@@ -3,7 +3,7 @@
   "id": "btatech",
   "version": "${version}",
 
-  "name": "BtA Tech",
+  "name": "BTA Tech",
   "description": "A tech mod for Better Than Adventure!",
   "authors": [
     "kodo777"
@@ -19,6 +19,9 @@
   "entrypoints": {
     "main": [
       "kodo777.btatech.BtATech"
+    ],
+    "recipesReady": [
+      "kodo777.btatech.BtATech"
     ]
   },
   "mixins": [
@@ -29,11 +32,5 @@
     "fabricloader": ">=0.13.3"
   },
   "suggests": {
-  },
-  "custom": {
-    "loom:injected_interfaces": {
-      "net/minecraft/src/EntityPlayer": ["kodo777/btatech/interfaces/IEntityPlayer"],
-      "net/minecraft/src/EntityPlayerSP": ["kodo777/btatech/interfaces/IEntityPlayerSP"]
-    }
   }
 }

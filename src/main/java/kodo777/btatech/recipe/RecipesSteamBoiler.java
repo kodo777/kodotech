@@ -1,7 +1,8 @@
 package kodo777.btatech.recipe;
 
 import kodo777.btatech.BtATech;
-import net.minecraft.src.*;
+import net.minecraft.core.item.Item;
+import net.minecraft.core.item.ItemStack;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +16,7 @@ public class RecipesSteamBoiler {
     }
 
     private RecipesSteamBoiler() {
-        this.addSmelting(Item.bucketWater.itemID, new ItemStack(BtATech.bucketSteam));
+        this.addSmelting(Item.bucketWater.id, new ItemStack(BtATech.bucketSteam));
     }
 
     public void addSmelting(int i, ItemStack itemstack) {

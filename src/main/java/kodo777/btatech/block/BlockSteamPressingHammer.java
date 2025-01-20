@@ -1,26 +1,39 @@
 package kodo777.btatech.block;
 
 import kodo777.btatech.BtATech;
-import kodo777.btatech.gui.GuiSteamBoiler;
+import kodo777.btatech.KodoGui;
 import kodo777.btatech.gui.GuiSteamPressingHammer;
-import kodo777.btatech.interfaces.IEntityPlayer;
-import kodo777.btatech.interfaces.IEntityPlayerSP;
-import kodo777.btatech.tileentity.TileEntitySteamBoiler;
 import kodo777.btatech.tileentity.TileEntitySteamPressingHammer;
-import net.minecraft.src.*;
+import net.minecraft.core.block.BlockTileEntityRotatable;
+import net.minecraft.core.block.entity.TileEntity;
+import net.minecraft.core.entity.EntityItem;
+import net.minecraft.core.entity.player.EntityPlayer;
+import net.minecraft.core.block.material.Material;
+import net.minecraft.core.enums.EnumDropCause;
+import net.minecraft.core.item.ItemStack;
+import net.minecraft.core.util.helper.Side;
+import net.minecraft.core.world.World;
 
 import java.util.Random;
 
-public class BlockSteamPressingHammer extends BlockContainerRotatable {
+public class BlockSteamPressingHammer extends BlockTileEntityRotatable {
     protected Random steamPressingHammerRand = new Random();
     protected final boolean isActive;
     protected static boolean keepSteamPressingHammerInventory = false;
 
-    public BlockSteamPressingHammer(int i, Boolean flag){ super(i, Material.rock); this.isActive=flag;}
-    public int idDropped(int i, Random random) {
-        return BtATech.steamPressingHammerIdle.blockID;
+    public BlockSteamPressingHammer(String s, int i, Boolean flag){
+        super(s, i, Material.stone);
+        this.isActive = flag;
     }
-    protected TileEntity getBlockEntity() {return new TileEntitySteamPressingHammer();}
+    @Override
+    public ItemStack[] getBreakResult(World world, EnumDropCause dropCause, int x, int y, int z, int meta, TileEntity tileEntity) {
+        return new ItemStack[] { new ItemStack(BtATech.steamPressingHammerIdle) };
+    }
+    @Override
+    protected TileEntity getNewBlockEntity() {
+        return new TileEntitySteamPressingHammer();
+    }
+    @Override
     public void randomDisplayTick(World world, int i, int j, int k, Random random) {
         if (this.isActive) {
             int l = world.getBlockMetadata(i, j, k);
@@ -30,25 +43,26 @@ public class BlockSteamPressingHammer extends BlockContainerRotatable {
             float f3 = 0.52F;
             float f4 = random.nextFloat() * 0.6F - 0.3F;
             if (l == 4) {
-                world.spawnParticle("smoke", (double)(f - f3), (double)f1, (double)(f2 + f4), 0.0, 0.0, 0.0);
-                world.spawnParticle("flame", (double)(f - f3), (double)f1, (double)(f2 + f4), 0.0, 0.0, 0.0);
+                world.spawnParticle("smoke", (double)(f - f3), (double)f1, (double)(f2 + f4), 0.0, 0.0, 0.0, 0);
+                world.spawnParticle("flame", (double)(f - f3), (double)f1, (double)(f2 + f4), 0.0, 0.0, 0.0, 0);
             } else if (l == 5) {
-                world.spawnParticle("smoke", (double)(f + f3), (double)f1, (double)(f2 + f4), 0.0, 0.0, 0.0);
-                world.spawnParticle("flame", (double)(f + f3), (double)f1, (double)(f2 + f4), 0.0, 0.0, 0.0);
+                world.spawnParticle("smoke", (double)(f + f3), (double)f1, (double)(f2 + f4), 0.0, 0.0, 0.0, 0);
+                world.spawnParticle("flame", (double)(f + f3), (double)f1, (double)(f2 + f4), 0.0, 0.0, 0.0, 0);
             } else if (l == 2) {
-                world.spawnParticle("smoke", (double)(f + f4), (double)f1, (double)(f2 - f3), 0.0, 0.0, 0.0);
-                world.spawnParticle("flame", (double)(f + f4), (double)f1, (double)(f2 - f3), 0.0, 0.0, 0.0);
+                world.spawnParticle("smoke", (double)(f + f4), (double)f1, (double)(f2 - f3), 0.0, 0.0, 0.0, 0);
+                world.spawnParticle("flame", (double)(f + f4), (double)f1, (double)(f2 - f3), 0.0, 0.0, 0.0, 0);
             } else if (l == 3) {
-                world.spawnParticle("smoke", (double)(f + f4), (double)f1, (double)(f2 + f3), 0.0, 0.0, 0.0);
-                world.spawnParticle("flame", (double)(f + f4), (double)f1, (double)(f2 + f3), 0.0, 0.0, 0.0);
+                world.spawnParticle("smoke", (double)(f + f4), (double)f1, (double)(f2 + f3), 0.0, 0.0, 0.0, 0);
+                world.spawnParticle("flame", (double)(f + f4), (double)f1, (double)(f2 + f3), 0.0, 0.0, 0.0, 0);
             }
 
         }
     }
-    public boolean blockActivated(World world, int i, int j, int k, EntityPlayer entityplayer) {
-        TileEntitySteamPressingHammer tileentitysteampressinghammer = (TileEntitySteamPressingHammer) world.getBlockTileEntity(i, j, k);
+    @Override
+    public boolean onBlockRightClicked(World world, int x, int y, int z, EntityPlayer player, Side side, double xPlaced, double yPlaced) {
+        TileEntitySteamPressingHammer tileentitysteampressinghammer = (TileEntitySteamPressingHammer) world.getBlockTileEntity(x, y, z);
         if (tileentitysteampressinghammer != null){
-            entityplayer.displayGui(new GuiSteamPressingHammer(entityplayer.inventory, tileentitysteampressinghammer));
+            ((KodoGui) player).kodotech$displayGuiSteamPressingHammer(tileentitysteampressinghammer);
         }
         return true;
     }
@@ -61,9 +75,9 @@ public class BlockSteamPressingHammer extends BlockContainerRotatable {
         } else {
             keepSteamPressingHammerInventory = true;
             if (lit) {
-                world.setBlockWithNotify(x, y, z, BtATech.steamPressingHammerActive.blockID);
+                world.setBlockWithNotify(x, y, z, BtATech.steamPressingHammerActive.id);
             } else {
-                world.setBlockWithNotify(x, y, z, BtATech.steamPressingHammerIdle.blockID);
+                world.setBlockWithNotify(x, y, z, BtATech.steamPressingHammerIdle.id);
             }
 
             keepSteamPressingHammerInventory = false;
@@ -72,9 +86,10 @@ public class BlockSteamPressingHammer extends BlockContainerRotatable {
             world.setBlockTileEntity(x, y, z, tileentity);
         }
     }
-    public void onBlockRemoval(World world, int i, int j, int k) {
+    @Override
+    public void onBlockRemoved(World world, int x, int y, int z, int data) {
         if (!keepSteamPressingHammerInventory) {
-            TileEntitySteamPressingHammer tileentitysteampressinghammer = (TileEntitySteamPressingHammer) world.getBlockTileEntity(i, j, k);
+            TileEntitySteamPressingHammer tileentitysteampressinghammer = (TileEntitySteamPressingHammer) world.getBlockTileEntity(x, y, z);
 
             for(int l = 0; l < tileentitysteampressinghammer.getSizeInventory(); ++l) {
                 ItemStack itemstack = tileentitysteampressinghammer.getStackInSlot(l);
@@ -90,17 +105,17 @@ public class BlockSteamPressingHammer extends BlockContainerRotatable {
                         }
 
                         itemstack.stackSize -= i1;
-                        EntityItem entityitem = new EntityItem(world, (double)((float)i + f), (double)((float)j + f1), (double)((float)k + f2), new ItemStack(itemstack.itemID, i1, itemstack.getMetadata()));
+                        EntityItem entityitem = new EntityItem(world, (double)((float)x + f), (double)((float)y + f1), (double)((float)z + f2), new ItemStack(itemstack.itemID, i1, itemstack.getMetadata()));
                         float f3 = 0.05F;
-                        entityitem.motionX = (double)((float)this.steamPressingHammerRand.nextGaussian() * f3);
-                        entityitem.motionY = (double)((float)this.steamPressingHammerRand.nextGaussian() * f3 + 0.2F);
-                        entityitem.motionZ = (double)((float)this.steamPressingHammerRand.nextGaussian() * f3);
+                        entityitem.xd = (double)((float)this.steamPressingHammerRand.nextGaussian() * f3);
+                        entityitem.yd = (double)((float)this.steamPressingHammerRand.nextGaussian() * f3 + 0.2F);
+                        entityitem.zd = (double)((float)this.steamPressingHammerRand.nextGaussian() * f3);
                         world.entityJoinedWorld(entityitem);
                     }
                 }
             }
         }
 
-        super.onBlockRemoval(world, i, j, k);
+        super.onBlockRemoved(world, x, y, z, data);
     }
 }

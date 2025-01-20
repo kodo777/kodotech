@@ -3,9 +3,9 @@ package kodo777.btatech.gui;
 import kodo777.btatech.container.ContainerSteamPressingHammer;
 import kodo777.btatech.tileentity.TileEntitySteamPressingHammer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.GuiContainer;
-import net.minecraft.src.InventoryPlayer;
-import net.minecraft.src.helper.Textures;
+import net.minecraft.client.gui.GuiContainer;
+import net.minecraft.client.util.helper.Textures;
+import net.minecraft.core.player.inventory.IInventory;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.image.BufferedImage;
@@ -13,10 +13,10 @@ import java.awt.image.BufferedImage;
 public class GuiSteamPressingHammer extends GuiContainer {
     private TileEntitySteamPressingHammer steamPressingHammerInventory;
 
-    private BufferedImage guiIMG = Textures.readImage(getClass().getResourceAsStream("/assets/btatech/gui/gui_steam_pressing_hammer.png"));
-    private int guiTexture = Minecraft.getMinecraft().renderEngine.allocateAndSetupTexture(guiIMG);
+    private BufferedImage guiIMG = Textures.readImage(getClass().getResourceAsStream("/assets/kodotech/textures/gui/gui_steam_pressing_hammer.png"));
+    private int guiTexture = Minecraft.getMinecraft(Minecraft.class).renderEngine.allocateAndSetupTexture(guiIMG);
 
-    public GuiSteamPressingHammer(InventoryPlayer inventoryplayer, TileEntitySteamPressingHammer tileentitysteampressinghammer) {
+    public GuiSteamPressingHammer(IInventory inventoryplayer, TileEntitySteamPressingHammer tileentitysteampressinghammer) {
         super(new ContainerSteamPressingHammer(inventoryplayer, tileentitysteampressinghammer));
         this.steamPressingHammerInventory = tileentitysteampressinghammer;
     }

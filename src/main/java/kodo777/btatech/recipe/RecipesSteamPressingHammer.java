@@ -1,8 +1,8 @@
 package kodo777.btatech.recipe;
 
 import kodo777.btatech.BtATech;
-import net.minecraft.src.Item;
-import net.minecraft.src.ItemStack;
+import net.minecraft.core.item.Item;
+import net.minecraft.core.item.ItemStack;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,9 +17,9 @@ public class RecipesSteamPressingHammer {
     }
 
     private RecipesSteamPressingHammer() {
-        this.addSmelting(Item.ingotIron.itemID, new ItemStack(BtATech.plateIron));
-        this.addSmelting(Item.ingotSteel.itemID, new ItemStack(BtATech.plateSteel));
-        this.addSmelting(BtATech.carbonEnrichedSteelIngot.itemID, new ItemStack(BtATech.plateCarbonEnrichedSteel));
+        this.addSmelting(Item.ingotIron.id, new ItemStack(BtATech.plateIron));
+        this.addSmelting(Item.ingotSteel.id, new ItemStack(BtATech.plateSteel));
+        this.addSmelting(BtATech.carbonEnrichedSteelIngot.id, new ItemStack(BtATech.plateCarbonEnrichedSteel));
     }
 
 

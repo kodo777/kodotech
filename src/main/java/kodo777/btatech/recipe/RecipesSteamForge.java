@@ -1,7 +1,7 @@
 package kodo777.btatech.recipe;
 
 import kodo777.btatech.BtATech;
-import net.minecraft.src.ItemStack;
+import net.minecraft.core.item.ItemStack;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,9 +15,9 @@ public class RecipesSteamForge {
     }
 
     private RecipesSteamForge() {
-        this.addSmelting(BtATech.plateIron.itemID, new ItemStack(BtATech.gearIron));
-        this.addSmelting(BtATech.plateSteel.itemID, new ItemStack(BtATech.gearSteel));
-        this.addSmelting(BtATech.plateCarbonEnrichedSteel.itemID, new ItemStack(BtATech.gearCarbonEnrichedSteel));
+        this.addSmelting(BtATech.plateIron.id, new ItemStack(BtATech.gearIron));
+        this.addSmelting(BtATech.plateSteel.id, new ItemStack(BtATech.gearSteel));
+        this.addSmelting(BtATech.plateCarbonEnrichedSteel.id, new ItemStack(BtATech.gearCarbonEnrichedSteel));
     }
 
 

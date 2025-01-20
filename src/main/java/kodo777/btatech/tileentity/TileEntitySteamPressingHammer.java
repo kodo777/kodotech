@@ -1,10 +1,18 @@
 package kodo777.btatech.tileentity;
 
+import com.mojang.nbt.CompoundTag;
+import com.mojang.nbt.ListTag;
 import kodo777.btatech.BtATech;
 import kodo777.btatech.block.BlockSteamPressingHammer;
 import kodo777.btatech.recipe.LookupFuelSteamPressingHammer;
 import kodo777.btatech.recipe.RecipesSteamPressingHammer;
-import net.minecraft.src.*;
+import net.minecraft.core.block.Block;
+import net.minecraft.core.block.entity.TileEntity;
+import net.minecraft.core.entity.player.EntityPlayer;
+import net.minecraft.core.item.Item;
+import net.minecraft.core.item.ItemStack;
+import net.minecraft.core.crafting.LookupFuelFurnaceBlast;
+import net.minecraft.core.player.inventory.IInventory;
 
 public class TileEntitySteamPressingHammer extends TileEntity implements IInventory{
     private ItemStack[] steamPressingHammerItemStacks = new ItemStack[5];
@@ -13,16 +21,19 @@ public class TileEntitySteamPressingHammer extends TileEntity implements IInvent
     public int maxCookTime = 200;
     public int currentBurnTime = 0;
     public TileEntitySteamPressingHammer(){
-
     }
+
+    @Override
     public int getSizeInventory() {
         return this.steamPressingHammerItemStacks.length;
     }
 
+    @Override
     public ItemStack getStackInSlot(int i) {
         return this.steamPressingHammerItemStacks[i];
     }
 
+    @Override
     public ItemStack decrStackSize(int i, int j) {
         if (this.steamPressingHammerItemStacks[i] != null) {
             ItemStack itemstack1;
@@ -43,6 +54,7 @@ public class TileEntitySteamPressingHammer extends TileEntity implements IInvent
         }
     }
 
+    @Override
     public void setInventorySlotContents(int i, ItemStack itemstack) {
         this.steamPressingHammerItemStacks[i] = itemstack;
         if (itemstack != null && itemstack.stackSize > this.getInventoryStackLimit()) {
@@ -51,47 +63,51 @@ public class TileEntitySteamPressingHammer extends TileEntity implements IInvent
 
     }
 
+    @Override
     public String getInvName() {
         return "Steam Pressing Hammer";
     }
 
-    public void readFromNBT(NBTTagCompound nbttagcompound) {
-        super.readFromNBT(nbttagcompound);
-        NBTTagList nbttaglist = nbttagcompound.getTagList("Items");
+    @Override
+    public void readFromNBT(CompoundTag CompoundTag) {
+        super.readFromNBT(CompoundTag);
+        ListTag ListTag = CompoundTag.getList("Items");
         this.steamPressingHammerItemStacks = new ItemStack[this.getSizeInventory()];
 
-        for(int i = 0; i < nbttaglist.tagCount(); ++i) {
-            NBTTagCompound nbttagcompound1 = (NBTTagCompound)nbttaglist.tagAt(i);
-            byte byte0 = nbttagcompound1.getByte("Slot");
+        for(int i = 0; i < ListTag.tagCount(); ++i) {
+            CompoundTag CompoundTag1 = (CompoundTag)ListTag.tagAt(i);
+            byte byte0 = CompoundTag1.getByte("Slot");
             if (byte0 >= 0 && byte0 < this.steamPressingHammerItemStacks.length) {
-                this.steamPressingHammerItemStacks[byte0] = new ItemStack(nbttagcompound1);
+                this.steamPressingHammerItemStacks[byte0] = ItemStack.readItemStackFromNbt(CompoundTag1);
             }
         }
 
-        this.currentBurnTime = nbttagcompound.getShort("BurnTime");
-        this.currentCookTime = nbttagcompound.getShort("CookTime");
-        this.maxBurnTime = nbttagcompound.getShort("MaxBurnTime");
+        this.currentBurnTime = CompoundTag.getShort("BurnTime");
+        this.currentCookTime = CompoundTag.getShort("CookTime");
+        this.maxBurnTime = CompoundTag.getShort("MaxBurnTime");
     }
 
-    public void writeToNBT(NBTTagCompound nbttagcompound) {
-        super.writeToNBT(nbttagcompound);
-        nbttagcompound.setShort("BurnTime", (short)this.currentBurnTime);
-        nbttagcompound.setShort("CookTime", (short)this.currentCookTime);
-        nbttagcompound.setShort("MaxBurnTime", (short)this.maxBurnTime);
-        NBTTagList nbttaglist = new NBTTagList();
+    @Override
+    public void writeToNBT(CompoundTag CompoundTag) {
+        super.writeToNBT(CompoundTag);
+        CompoundTag.putShort("BurnTime", (short)this.currentBurnTime);
+        CompoundTag.putShort("CookTime", (short)this.currentCookTime);
+        CompoundTag.putShort("MaxBurnTime", (short)this.maxBurnTime);
+        ListTag ListTag = new ListTag();
 
         for(int i = 0; i < this.steamPressingHammerItemStacks.length; ++i) {
             if (this.steamPressingHammerItemStacks[i] != null) {
-                NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-                nbttagcompound1.setByte("Slot", (byte)i);
-                this.steamPressingHammerItemStacks[i].writeToNBT(nbttagcompound1);
-                nbttaglist.setTag(nbttagcompound1);
+                CompoundTag CompoundTag1 = new CompoundTag();
+                CompoundTag1.putByte("Slot", (byte)i);
+                this.steamPressingHammerItemStacks[i].writeToNBT(CompoundTag1);
+                ListTag.addTag(CompoundTag1);
             }
         }
 
-        nbttagcompound.setTag("Items", nbttaglist);
+        CompoundTag.put("Items", ListTag);
     }
 
+    @Override
     public int getInventoryStackLimit() {
         return 64;
     }
@@ -108,21 +124,22 @@ public class TileEntitySteamPressingHammer extends TileEntity implements IInvent
         return this.currentBurnTime > 0;
     }
 
-    public void updateEntity() {
+    @Override
+    public void tick() {
         boolean isBurnTimeHigherThan0 = this.currentBurnTime > 0;
         boolean steamPressingHammerUpdated = false;
         if (this.currentBurnTime > 0) {
             --this.currentBurnTime;
         }
 
-        if (!this.worldObj.isMultiplayerAndNotHost) {
-            if (this.worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord) == BtATech.steamPressingHammerIdle.blockID && this.currentBurnTime == 0 && this.steamPressingHammerItemStacks[0] == null && this.steamPressingHammerItemStacks[1] != null && this.steamPressingHammerItemStacks[1].itemID == Block.netherrack.blockID) {
+        if (!this.worldObj.isClientSide) {
+            if (this.worldObj.getBlockId(this.x, this.y, this.z) == BtATech.steamPressingHammerIdle.id && this.currentBurnTime == 0 && this.steamPressingHammerItemStacks[0] == null && this.steamPressingHammerItemStacks[1] != null && this.steamPressingHammerItemStacks[1].itemID == Block.netherrack.id) {
                 --this.steamPressingHammerItemStacks[4].stackSize;
                 if (this.steamPressingHammerItemStacks[4].stackSize == 0) {
                     this.steamPressingHammerItemStacks[4] = null;
                 }
 
-                BlockSteamPressingHammer.updateSteamPressingHammerBlockState(true, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+                BlockSteamPressingHammer.updateSteamPressingHammerBlockState(true, this.worldObj, this.x, this.y, this.z);
                 steamPressingHammerUpdated = true;
             }
 
@@ -170,7 +187,7 @@ public class TileEntitySteamPressingHammer extends TileEntity implements IInvent
         if (steamPressingHammerItemStacks[0] == null || steamPressingHammerItemStacks[3] == null || steamPressingHammerItemStacks[4] == null) {
             return false;
         } else {
-            ItemStack itemstack = RecipesSteamPressingHammer.smelting().getSmeltingResult(this.steamPressingHammerItemStacks[0].getItem().itemID);
+            ItemStack itemstack = RecipesSteamPressingHammer.smelting().getSmeltingResult(this.steamPressingHammerItemStacks[0].getItem().id);
             if (itemstack == null) {
                 return false;
             } else if (this.steamPressingHammerItemStacks[2] == null) {
@@ -187,7 +204,7 @@ public class TileEntitySteamPressingHammer extends TileEntity implements IInvent
 
     public void smeltItem() {
         if (this.canSmelt()) {
-            ItemStack itemstack = RecipesSteamPressingHammer.smelting().getSmeltingResult(this.steamPressingHammerItemStacks[0].getItem().itemID);
+            ItemStack itemstack = RecipesSteamPressingHammer.smelting().getSmeltingResult(this.steamPressingHammerItemStacks[0].getItem().id);
             if (this.steamPressingHammerItemStacks[2] == null) {
                 this.steamPressingHammerItemStacks[2] = itemstack.copy();
             } else if (this.steamPressingHammerItemStacks[2].itemID == itemstack.itemID) {
@@ -210,18 +227,24 @@ public class TileEntitySteamPressingHammer extends TileEntity implements IInvent
     }
 
     protected void updateSteamPressingHammer() {
-        BlockSteamPressingHammer.updateSteamPressingHammerBlockState(this.currentBurnTime > 0, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+        BlockSteamPressingHammer.updateSteamPressingHammerBlockState(this.currentBurnTime > 0, this.worldObj, this.x, this.y, this.z);
     }
 
     private int getBurnTimeFromItem(ItemStack itemStack) {
-        return itemStack == null ? 0 : LookupFuelSteamPressingHammer.fuelSteamPressingHammer().getFuelYield(itemStack.getItem().itemID);
+        return itemStack == null ? 0 : LookupFuelSteamPressingHammer.fuelSteamPressingHammer().getFuelYield(itemStack.getItem().id);
     }
 
+    @Override
     public boolean canInteractWith(EntityPlayer entityplayer) {
-        if (this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord) != this) {
+        if (this.worldObj.getBlockTileEntity(this.x, this.y, this.z) != this) {
             return false;
         } else {
-            return entityplayer.getDistanceSq((double)this.xCoord + 0.5, (double)this.yCoord + 0.5, (double)this.zCoord + 0.5) <= 64.0;
+            return entityplayer.distanceToSqr((double)this.x + 0.5, (double)this.y + 0.5, (double)this.z + 0.5) <= 64.0;
         }
+    }
+
+    @Override
+    public void sortInventory() {
+
     }
 }

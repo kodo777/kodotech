@@ -3,8 +3,9 @@ package kodo777.btatech.gui;
 import kodo777.btatech.container.ContainerSteamBoiler;
 import kodo777.btatech.tileentity.TileEntitySteamBoiler;
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.*;
-import net.minecraft.src.helper.Textures;
+import net.minecraft.client.gui.GuiContainer;
+import net.minecraft.client.util.helper.Textures;
+import net.minecraft.core.player.inventory.IInventory;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.image.BufferedImage;
@@ -12,11 +13,11 @@ import java.awt.image.BufferedImage;
 public class GuiSteamBoiler extends GuiContainer {
     private final TileEntitySteamBoiler steamBoilerInventory;
 
-    private final BufferedImage guiIMG = Textures.readImage(getClass().getResourceAsStream("/assets/btatech/gui/gui_steam_boiler.png"));
-    private final int guiTexture = Minecraft.getMinecraft().renderEngine.allocateAndSetupTexture(guiIMG);
+    private final BufferedImage guiIMG = Textures.readImage(getClass().getResourceAsStream("/assets/kodotech/textures/gui/gui_steam_boiler.png"));
+    private final int guiTexture = Minecraft.getMinecraft(Minecraft.class).renderEngine.allocateAndSetupTexture(guiIMG);
 
-    public GuiSteamBoiler(InventoryPlayer inventoryplayer, TileEntitySteamBoiler tileentitysteamboiler) {
-        super(new ContainerSteamBoiler(inventoryplayer, tileentitysteamboiler));
+    public GuiSteamBoiler(IInventory inventory, TileEntitySteamBoiler tileentitysteamboiler) {
+        super(new ContainerSteamBoiler(inventory, tileentitysteamboiler));
         this.steamBoilerInventory = tileentitysteamboiler;
     }
 

@@ -1,0 +1,24 @@
+tile.kodotech.steam.boiler.idle.name=Steam Boiler
+tile.kodotech.steam.boiler.idle.desc=Boils water into steam.
+tile.kodotech.steam.pressing.hammer.idle.name=Steam Pressing Hammer
+tile.kodotech.steam.pressing.hammer.idle.desc=Presses ingots into plates at high temperatures.
+tile.kodotech.steam.machine.hull.name=Steam Machine Hull
+tile.kodotech.steam.machine.hull.desc=A major component of steam machines.
+tile.kodotech.steam.forge.idle.name=Steam Forge
+tile.kodotech.steam.forge.idle.desc=Forges plates into various shapes
+
+item.kodotech.stone.gear.name=Stone Gear
+item.kodotech.stone.gear.desc=Basic machine component.
+item.kodotech.carbon.enriched.steel.ingot.name=Carbon Enriched Steel Ingot
+item.kodotech.carbon.enriched.steel.ingot.desc=You better not smelt it again.
+item.kodotech.ash.of.shame.name=Ash Of Shame
+item.kodotech.ash.of.shame.desc=I told you not to smelt it again.
+item.kodotech.bucket.steam.name=Bucket of Steam
+item.kodotech.bucket.steam.desc=A bucket full of steam.
+item.kodotech.bottle.name=Glass Bottle
+item.kodotech.bottle.desc=A bottle made out of glass.
+item.kodotech.bottle.steam.name=Bottle of Steam
+item.kodotech.bottle.steam.desc=A bottle full of steam.
+item.kodotech.plate.iron.name=Iron Plate
+item.kodotech.plate.steel.name=Steel Plate
+item.kodotech.plate.carbon.enriched.steel.name=Carbon Enriched Steel Plate

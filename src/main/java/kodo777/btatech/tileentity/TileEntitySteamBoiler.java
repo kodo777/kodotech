@@ -1,27 +1,38 @@
 package kodo777.btatech.tileentity;
 
+import com.mojang.nbt.CompoundTag;
+import com.mojang.nbt.ListTag;
 import kodo777.btatech.BtATech;
 import kodo777.btatech.block.BlockSteamBoiler;
 import kodo777.btatech.recipe.RecipesSteamBoiler;
-import net.minecraft.src.*;
+import net.minecraft.core.block.Block;
+import net.minecraft.core.block.entity.TileEntity;
+import net.minecraft.core.entity.player.EntityPlayer;
+import net.minecraft.core.item.Item;
+import net.minecraft.core.item.ItemStack;
+import net.minecraft.core.crafting.LookupFuelFurnaceBlast;
+import net.minecraft.core.player.inventory.IInventory;
 
-public class TileEntitySteamBoiler extends TileEntity implements IInventory{
+public class TileEntitySteamBoiler extends TileEntity implements IInventory {
     protected ItemStack[] steamBoilerItemStacks = new ItemStack[3];
     public int maxBurnTime = 0;
     public int currentCookTime = 0;
     public int maxCookTime = 200;
     public int currentBurnTime = 0;
     public TileEntitySteamBoiler(){
-
     }
+
+    @Override
     public int getSizeInventory() {
         return this.steamBoilerItemStacks.length;
     }
 
+    @Override
     public ItemStack getStackInSlot(int i) {
         return this.steamBoilerItemStacks[i];
     }
 
+    @Override
     public ItemStack decrStackSize(int i, int j) {
         if (this.steamBoilerItemStacks[i] != null) {
             ItemStack itemstack1;
@@ -42,6 +53,7 @@ public class TileEntitySteamBoiler extends TileEntity implements IInventory{
         }
     }
 
+    @Override
     public void setInventorySlotContents(int i, ItemStack itemstack) {
         this.steamBoilerItemStacks[i] = itemstack;
         if (itemstack != null && itemstack.stackSize > this.getInventoryStackLimit()) {
@@ -50,20 +62,22 @@ public class TileEntitySteamBoiler extends TileEntity implements IInventory{
 
     }
 
+    @Override
     public String getInvName() {
         return "Steam Boiler";
     }
 
-    public void readFromNBT(NBTTagCompound nbttagcompound) {
+    @Override
+    public void readFromNBT(CompoundTag nbttagcompound) {
         super.readFromNBT(nbttagcompound);
-        NBTTagList nbttaglist = nbttagcompound.getTagList("Items");
+        ListTag nbttaglist = nbttagcompound.getList("Items");
         this.steamBoilerItemStacks = new ItemStack[this.getSizeInventory()];
 
         for(int i = 0; i < nbttaglist.tagCount(); ++i) {
-            NBTTagCompound nbttagcompound1 = (NBTTagCompound)nbttaglist.tagAt(i);
+            CompoundTag nbttagcompound1 = (CompoundTag)nbttaglist.tagAt(i);
             byte byte0 = nbttagcompound1.getByte("Slot");
             if (byte0 >= 0 && byte0 < this.steamBoilerItemStacks.length) {
-                this.steamBoilerItemStacks[byte0] = new ItemStack(nbttagcompound1);
+                this.steamBoilerItemStacks[byte0] = ItemStack.readItemStackFromNbt(nbttagcompound1);
             }
         }
 
@@ -72,25 +86,27 @@ public class TileEntitySteamBoiler extends TileEntity implements IInventory{
         this.maxBurnTime = nbttagcompound.getShort("MaxBurnTime");
     }
 
-    public void writeToNBT(NBTTagCompound nbttagcompound) {
+    @Override
+    public void writeToNBT(CompoundTag nbttagcompound) {
         super.writeToNBT(nbttagcompound);
-        nbttagcompound.setShort("BurnTime", (short)this.currentBurnTime);
-        nbttagcompound.setShort("CookTime", (short)this.currentCookTime);
-        nbttagcompound.setShort("MaxBurnTime", (short)this.maxBurnTime);
-        NBTTagList nbttaglist = new NBTTagList();
+        nbttagcompound.putShort("BurnTime", (short)this.currentBurnTime);
+        nbttagcompound.putShort("CookTime", (short)this.currentCookTime);
+        nbttagcompound.putShort("MaxBurnTime", (short)this.maxBurnTime);
+        ListTag nbttaglist = new ListTag();
 
         for(int i = 0; i < this.steamBoilerItemStacks.length; ++i) {
             if (this.steamBoilerItemStacks[i] != null) {
-                NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-                nbttagcompound1.setByte("Slot", (byte)i);
+                CompoundTag nbttagcompound1 = new CompoundTag();
+                nbttagcompound1.putByte("Slot", (byte)i);
                 this.steamBoilerItemStacks[i].writeToNBT(nbttagcompound1);
-                nbttaglist.setTag(nbttagcompound1);
+                nbttaglist.addTag(nbttagcompound1);
             }
         }
 
-        nbttagcompound.setTag("Items", nbttaglist);
+        nbttagcompound.put("Items", nbttaglist);
     }
 
+    @Override
     public int getInventoryStackLimit() {
         return 64;
     }
@@ -107,21 +123,22 @@ public class TileEntitySteamBoiler extends TileEntity implements IInventory{
         return this.currentBurnTime > 0;
     }
 
-    public void updateEntity() {
+    @Override
+    public void tick() {
         boolean isBurnTimeHigherThan0 = this.currentBurnTime > 0;
         boolean steamBoilerUpdated = false;
         if (this.currentBurnTime > 0) {
             --this.currentBurnTime;
         }
 
-        if (!this.worldObj.isMultiplayerAndNotHost) {
-            if (this.worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord) == BtATech.steamBoilerIdle.blockID && this.currentBurnTime == 0 && this.steamBoilerItemStacks[0] == null && this.steamBoilerItemStacks[1] != null && this.steamBoilerItemStacks[1].itemID == Block.netherrack.blockID) {
+        if (!this.worldObj.isClientSide) {
+            if (this.worldObj.getBlockId(this.x, this.y, this.z) == BtATech.steamBoilerIdle.id && this.currentBurnTime == 0 && this.steamBoilerItemStacks[0] == null && this.steamBoilerItemStacks[1] != null && this.steamBoilerItemStacks[1].itemID == Block.netherrack.id) {
                 --this.steamBoilerItemStacks[1].stackSize;
                 if (this.steamBoilerItemStacks[1].stackSize == 0) {
                     this.steamBoilerItemStacks[1] = null;
                 }
 
-                BlockSteamBoiler.updateSteamBoilerBlockState(true, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+                BlockSteamBoiler.updateSteamBoilerBlockState(true, this.worldObj, this.x, this.y, this.z);
                 steamBoilerUpdated = true;
             }
 
@@ -169,7 +186,7 @@ public class TileEntitySteamBoiler extends TileEntity implements IInventory{
         if (this.steamBoilerItemStacks[0] == null) {
             return false;
         } else {
-            ItemStack itemstack = RecipesSteamBoiler.smelting().getSmeltingResult(this.steamBoilerItemStacks[0].getItem().itemID);
+            ItemStack itemstack = RecipesSteamBoiler.smelting().getSmeltingResult(this.steamBoilerItemStacks[0].getItem().id);
             if (itemstack == null) {
                 return false;
             } else if (this.steamBoilerItemStacks[2] == null) {
@@ -186,7 +203,7 @@ public class TileEntitySteamBoiler extends TileEntity implements IInventory{
 
     public void smeltItem() {
         if (this.canSmelt()) {
-            ItemStack itemstack = RecipesSteamBoiler.smelting().getSmeltingResult(this.steamBoilerItemStacks[0].getItem().itemID);
+            ItemStack itemstack = RecipesSteamBoiler.smelting().getSmeltingResult(this.steamBoilerItemStacks[0].getItem().id);
             if (this.steamBoilerItemStacks[2] == null) {
                 this.steamBoilerItemStacks[2] = itemstack.copy();
             } else if (this.steamBoilerItemStacks[2].itemID == itemstack.itemID) {
@@ -202,18 +219,25 @@ public class TileEntitySteamBoiler extends TileEntity implements IInventory{
     }
 
     protected void updateSteamBoiler() {
-        BlockSteamBoiler.updateSteamBoilerBlockState(this.currentBurnTime > 0, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+        BlockSteamBoiler.updateSteamBoilerBlockState(this.currentBurnTime > 0, this.worldObj, this.x, this.y, this.z);
     }
 
     private int getBurnTimeFromItem(ItemStack itemStack) {
-        return itemStack == null ? 0 : LookupFuelFurnaceBlast.fuelFurnaceBlast().getFuelYield(itemStack.getItem().itemID);
+        if (itemStack == null)
+            return 0;
+        return LookupFuelFurnaceBlast.instance.getFuelYield((itemStack.getItem()).id);
     }
 
+    @Override
     public boolean canInteractWith(EntityPlayer entityplayer) {
-        if (this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord) != this) {
+        if (this.worldObj.getBlockTileEntity(this.x, this.y, this.z) != this) {
             return false;
         } else {
-            return entityplayer.getDistanceSq((double)this.xCoord + 0.5, (double)this.yCoord + 0.5, (double)this.zCoord + 0.5) <= 64.0;
+            return entityplayer.distanceToSqr((double)this.x + 0.5, (double)this.y + 0.5, (double)this.z + 0.5) <= 64.0;
         }
+    }
+
+    @Override
+    public void sortInventory() {
     }
 }
